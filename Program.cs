@@ -35,8 +35,45 @@ namespace ParallelProcessing
 
         static int GetInt(int type)
         {
+            string input = string.Empty;
+            int val = 0;
+            bool inputValid = false;
+
+            switch(type)
+            {
+                //0 is time limit input
+                case 0:
+                    while(!inputValid)
+                    {
+                        Console.WriteLine("Enter the time limit (seconds): ");
+
+                        input = Console.ReadLine();
+
+                        inputValid = ValidateInput(input, 1);
+                    }
+
+                    val = int.Parse(input);
+
+                    break;
+
+                //1 is max threads input
+                case 1:
+                    while(!inputValid)
+                    {
+                        Console.WriteLine("Enter the maximum number of threads to be used for parallel processing: ");
+
+                        input = Console.ReadLine();
+
+                        inputValid = ValidateInput(input, 2);
+                    }
+
+                    val = int.Parse(input);
+
+                    break;
+            }
+
             Console.Clear();
-            return 0;
+            return val;
         }
 
         static bool ValidateInput(string input, int type)
@@ -66,10 +103,40 @@ namespace ParallelProcessing
 
                 //1 is time limit input
                 case 1:
+                    int timeLim = 0;
+
+                    isValid = int.TryParse(input, out timeLim);
+
+                    if (!isValid)
+                    {
+                        Console.WriteLine("\nIncorrect. Must input a positive whole, non-zero, number.\n");
+                    }
+
+                    else if (timeLim <= 0)
+                    {
+                        isValid = false;
+                        Console.WriteLine("\nIncorrect. Must input a positive whole, non-zero, number.\n");
+                    }
+
                     break;
 
                 //2 is max threads input
                 case 2:
+                    int maxThreads = 0;
+
+                    isValid = int.TryParse(input, out maxThreads);
+
+                    if (!isValid)
+                    {
+                        Console.WriteLine("\nIncorrect. Must input a positive whole, non-zero, number. It also cannot exceed processor count.\n");
+                    }
+
+                    else if (maxThreads <= 0 || maxThreads > Environment.ProcessorCount)
+                    {
+                        isValid = false;
+                        Console.WriteLine("\nIncorrect. Must input a positive whole, non-zero, number. It also cannot exceed processor count.\n");
+                    }
+
                     break;
             }
 
